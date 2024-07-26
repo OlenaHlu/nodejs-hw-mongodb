@@ -1,4 +1,4 @@
-import { Router } from 'express';
+import express from 'express';
 import {
   getContactsController,
   getContactByIdController,
@@ -9,9 +9,16 @@ import {
 import { ctrlWrapper } from '../utils/ctrlWrapper.js';
 import { validateBody } from '../middlewares/validateBody.js';
 import { isValidId } from '../middlewares/isValidId.js';
-import { createContactSchema } from '../validation/contacts.js';
+import {
+  createContactSchema,
+  updateContactSchema,
+} from '../validation/contacts.js';
 
-const router = Router();
+const router = express.Router();
+const jsonParser = express.json({
+  type: ['application/json', 'application/vnd.api+json'],
+  limit: '100kb',
+});
 
 router.get('/contacts', ctrlWrapper(getContactsController));
 
@@ -23,14 +30,16 @@ router.get(
 
 router.post(
   '/contacts',
+  jsonParser,
   validateBody(createContactSchema),
   ctrlWrapper(createContactController),
 );
 
 router.patch(
   '/contacts/:contactId',
+  jsonParser,
   isValidId,
-  validateBody(createContactSchema),
+  validateBody(updateContactSchema),
   ctrlWrapper(patchContactController),
 );
 
