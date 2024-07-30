@@ -1,13 +1,14 @@
 import express from 'express';
 import cors from 'cors';
 import pino from 'pino-http';
+import cookieParser from 'cookie-parser';
 
 import dotenv from 'dotenv';
 import { env } from './utils/env.js';
 import { errorHandler } from './middlewares/errorHandler.js';
 import { notFoundHandler } from './middlewares/notFoundHandler.js';
 
-import contactsRouter from './routers/contacts.js';
+import router from './routers/index.js';
 
 dotenv.config();
 
@@ -24,6 +25,8 @@ export const setupServer = () => {
   );
   app.use(cors());
 
+  app.use(cookieParser());
+
   app.use(
     pino({
       transport: {
@@ -33,7 +36,7 @@ export const setupServer = () => {
   );
 
   // Додаємо роутер
-  app.use(contactsRouter);
+  app.use(router);
 
   // Обробник для неіснуючих маршрутів
   app.use('*', (req, res) => {
