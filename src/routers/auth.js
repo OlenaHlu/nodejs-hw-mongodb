@@ -13,7 +13,7 @@ const router = express.Router();
 const parseJSON = express.json();
 
 router.post(
-  '/register',
+  '',
   parseJSON,
   validateBody(registerUserSchema),
   ctrlWrapper(registerUserController),
