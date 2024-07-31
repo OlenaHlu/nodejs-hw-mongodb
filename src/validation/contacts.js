@@ -6,13 +6,13 @@ export const createContactSchema = Joi.object({
   email: Joi.string().email(),
   isFavourite: Joi.boolean(),
   contactType: Joi.string().valid('work', 'home', 'personal').required(),
-  userId: Joi.string().required(),
+  // userId: Joi.string().required(),
 });
 
 export const updateContactSchema = Joi.object({
   name: Joi.string().min(3).max(20),
-  phoneNumber: Joi.string().min(3).max(20).required(),
+  phoneNumber: Joi.string().min(3).max(20),
   email: Joi.string().email(),
   isFavourite: Joi.boolean(),
-  contactType: Joi.string().valid('work', 'home', 'personal').required(),
+  contactType: Joi.string().valid('work', 'home', 'personal'),
 });
