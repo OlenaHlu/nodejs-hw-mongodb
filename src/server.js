@@ -10,6 +10,8 @@ import { notFoundHandler } from './middlewares/notFoundHandler.js';
 
 import router from './routers/index.js';
 
+import { UPLOAD_DIR } from './constants/index.js';
+
 dotenv.config();
 
 const PORT = Number(env('PORT', '3000'));
@@ -37,6 +39,8 @@ export const setupServer = () => {
 
   // Додаємо роутер
   app.use(router);
+
+  app.use('/uploads', express.static(UPLOAD_DIR));
 
   // Обробник для неіснуючих маршрутів
   app.use('*', (req, res) => {

@@ -17,34 +17,36 @@ import {
 import { validateBody } from '../middlewares/validateBody.js';
 
 const router = express.Router();
-const parseJSON = express.json();
+const jsonParser = express.json();
 
 router.post(
   '/register',
-  parseJSON,
+  jsonParser,
   validateBody(registerUserSchema),
   ctrlWrapper(registerUserController),
 );
 
 router.post(
   '/login',
-  parseJSON,
+  jsonParser,
   validateBody(loginUserSchema),
   ctrlWrapper(loginUserController),
 );
 
-router.post('/logout', parseJSON, ctrlWrapper(logoutUserController));
+router.post('/logout', jsonParser, ctrlWrapper(logoutUserController));
 
-router.post('/refresh', parseJSON, ctrlWrapper(refreshUserSessionController));
+router.post('/refresh', jsonParser, ctrlWrapper(refreshUserSessionController));
 
 router.post(
-  '/request-reset-email',
+  '/send-reset-email',
+  jsonParser,
   validateBody(requestResetEmailSchema),
   ctrlWrapper(requestResetEmailController),
 );
 
 router.post(
   '/reset-password',
+  jsonParser,
   validateBody(resetPasswordSchema),
   ctrlWrapper(resetPasswordController),
 );
