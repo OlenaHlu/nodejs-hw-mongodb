@@ -1,5 +1,4 @@
 import cloudinary from 'cloudinary';
-
 import { env } from './env.js';
 import { CLOUDINARY } from '../constants/index.js';
 
