@@ -7,13 +7,17 @@
   "scripts": {
     "lint": "eslint src/**/*.js",
     "start": "node ./src/index.js",
-    "dev": "nodemon src/index.js"
+    "dev": "nodemon src/index.js",
+    "build": "npm run build-docs",
+    "build-docs": "redocly bundle --ext json -o docs/swagger.json",
+    "preview-docs": "redocly preview-docs"
   },
   "keywords": [],
   "author": "Olena Hlushenkova <glushenkova_es@ukr.net>",
   "license": "ISC",
   "devDependencies": {
     "@eslint/js": "^9.6.0",
+    "@redocly/cli": "^1.19.0",
     "eslint": "^9.6.0",
     "globals": "^15.8.0",
     "nodemon": "^3.1.4",
@@ -26,6 +30,7 @@
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
+    "google-auth-library": "^9.13.0",
     "handlebars": "^4.7.8",
     "http-errors": "^2.0.0",
     "joi": "^17.13.3",
