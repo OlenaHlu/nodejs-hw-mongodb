@@ -12,6 +12,9 @@
   "servers": [
     {
       "url": "http://localhost:3000"
+    },
+    {
+      "url": "http://hw7-swagger-08gw.onrender.com"
     }
   ],
   "tags": [
@@ -398,6 +401,418 @@
           }
         }
       }
+    },
+    "/auth/register": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Registering a new user",
+        "operationId": "registerUser",
+        "description": "Register a new user",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "description": "User registration data",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "User's name",
+                    "example": "John Doe"
+                  },
+                  "email": {
+                    "type": "string",
+                    "description": "User's email address",
+                    "format": "email",
+                    "uniqueItems": true,
+                    "example": "john.doe@example.com"
+                  },
+                  "password": {
+                    "type": "string",
+                    "description": "User's password",
+                    "example": "user001"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successfully registered a new user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/auth"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "409": {
+            "description": "Email in use"
+          }
+        }
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "User's login",
+        "operationId": "loginUser",
+        "description": "Authenticate user and provide session tokens",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "description": "User login credentials",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "format": "email"
+                  },
+                  "password": {
+                    "type": "string",
+                    "format": "password"
+                  }
+                },
+                "required": [
+                  "email",
+                  "password"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully logged",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "accessToken": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "accessToken"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized - Invalid credentials"
+          },
+          "404": {
+            "description": "User not found"
+          }
+        }
+      }
+    },
+    "/auth/logout": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "user's logout",
+        "operationId": "logoutUser",
+        "description": "Invalidate the user session",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successfully logged out"
+          },
+          "400": {
+            "description": "Bad request"
+          }
+        }
+      }
+    },
+    "/auth/refresh": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Refresh user's session",
+        "operationId": "refreshUsersSession",
+        "description": "Refresh the session of user and provide new tokens",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "description": "Refresh session details",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "sessionId": {
+                    "type": "string"
+                  },
+                  "refreshToken": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "sessionId",
+                  "refreshToken"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully refreshed session",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "accessToken": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "accessToken"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized - Invalid session or token"
+          }
+        }
+      }
+    },
+    "/auth/send-reset-email": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Sending email with request to reset password",
+        "operationId": "requestResetEmail",
+        "description": "Dispatch a password reset email to the user",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "description": "User email for password reset",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "format": "email"
+                  }
+                },
+                "required": [
+                  "email"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Reset password email has been sent"
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "404": {
+            "description": "User not found"
+          }
+        }
+      }
+    },
+    "/auth/reset-pwd": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Reset user password",
+        "operationId": "resetPassword",
+        "description": "Reset the user password with using reset token",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "description": "Reset password details",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "token": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "token",
+                  "password"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Password successfully reset"
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized - Invalid token"
+          },
+          "404": {
+            "description": "User not found"
+          }
+        }
+      }
+    },
+    "/auth/get-oauth-url": {
+      "get": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Get Google OAuth URL",
+        "operationId": "getGoogleOAuthUrl",
+        "description": "Get the URL for Google OAuth authentication",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully restored Google OAuth URL",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "url": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          }
+        }
+      }
+    },
+    "/auth/confirm-oauth": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Login with Google OAuth",
+        "operationId": "loginWithGoogle",
+        "description": "Authenticate user using Google OAuth and create session",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "description": "Google OAuth authorization code",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "code": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "code"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully logged in via Google OAuth",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "accessToken": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "accessToken"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized - Invalid code or OAuth error"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -464,7 +879,7 @@
           "photo": {
             "description": "Link to the contact's photo",
             "type": "string",
-            "example": "<https://res.cloudinary.com/uqwgdu/image/upload/image.png>"
+            "example": "binary"
           },
           "createdAt": {
             "description": "Time when the contact was added",
@@ -474,6 +889,44 @@
           },
           "updatedAt": {
             "description": "Time when the contact was last updated",
+            "type": "string",
+            "format": "date-time",
+            "example": "2023-08-02T10:20:30Z"
+          }
+        }
+      },
+      "auth": {
+        "type": "object",
+        "required": [
+          "name",
+          "email",
+          "password"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "User's name",
+            "example": "John Doe"
+          },
+          "email": {
+            "description": "User's email",
+            "type": "string",
+            "default": "user@gmail.com",
+            "example": "john.doe@example.com"
+          },
+          "password": {
+            "type": "string",
+            "description": "User's password",
+            "example": "user001"
+          },
+          "createdAt": {
+            "description": "Time when the user was registered",
+            "type": "string",
+            "format": "date-time",
+            "example": "2023-08-02T10:20:30Z"
+          },
+          "updatedAt": {
+            "description": "Time when the user was last updated",
             "type": "string",
             "format": "date-time",
             "example": "2023-08-02T10:20:30Z"

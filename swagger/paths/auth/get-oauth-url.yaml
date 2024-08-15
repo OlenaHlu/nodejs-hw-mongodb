@@ -1,0 +1,19 @@
+tags:
+  - Auth
+summary: Get Google OAuth URL
+operationId: getGoogleOAuthUrl
+description: 'Get the URL for Google OAuth authentication'
+security:
+  - bearerAuth: []
+responses:
+  '200':
+    description: Successfully restored Google OAuth URL
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            url:
+              type: string
+  '400':
+    description: Bad request

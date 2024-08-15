@@ -1,0 +1,31 @@
+tags:
+  - Auth
+summary: Reset user password
+operationId: resetPassword
+description: 'Reset the user password with using reset token'
+security:
+  - bearerAuth: []
+requestBody:
+  description: Reset password details
+  required: true
+  content:
+    application/json:
+      schema:
+        type: object
+        properties:
+          token:
+            type: string
+          password:
+            type: string
+        required:
+          - token
+          - password
+responses:
+  '200':
+    description: Password successfully reset
+  '400':
+    description: Bad request
+  '401':
+    description: Unauthorized - Invalid token
+  '404':
+    description: User not found

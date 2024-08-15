@@ -1,0 +1,29 @@
+type: object
+required:
+  - name
+  - email
+  - password
+properties:
+  name:
+    type: string
+    description: "User's name"
+    example: 'John Doe'
+  email:
+    description: "User's email"
+    type: string
+    default: 'user@gmail.com'
+    example: 'john.doe@example.com'
+  password:
+    type: string
+    description: "User's password"
+    example: 'user001'
+  createdAt:
+    description: 'Time when the user was registered'
+    type: string
+    format: date-time
+    example: '2023-08-02T10:20:30Z'
+  updatedAt:
+    description: 'Time when the user was last updated'
+    type: string
+    format: date-time
+    example: '2023-08-02T10:20:30Z'

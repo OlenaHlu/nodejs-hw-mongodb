@@ -1,0 +1,42 @@
+tags:
+  - Auth
+summary: User's login
+operationId: loginUser
+description: 'Authenticate user and provide session tokens'
+security:
+  - bearerAuth: []
+requestBody:
+  description: User login credentials
+  required: true
+  content:
+    application/json:
+      schema:
+        type: object
+        properties:
+          email:
+            type: string
+            format: email
+          password:
+            type: string
+            format: password
+        required:
+          - email
+          - password
+responses:
+  '200':
+    description: Successfully logged
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            accessToken:
+              type: string
+          required:
+            - accessToken
+  '401':
+    description: Unauthorized - Invalid credentials
+  '404':
+    description: User not found
+  '400':
+    description: Bad request

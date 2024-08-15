@@ -1,0 +1,38 @@
+tags:
+  - Auth
+summary: Refresh user's session
+operationId: refreshUsersSession
+description: 'Refresh the session of user and provide new tokens'
+security:
+  - bearerAuth: []
+requestBody:
+  description: Refresh session details
+  required: true
+  content:
+    application/json:
+      schema:
+        type: object
+        properties:
+          sessionId:
+            type: string
+          refreshToken:
+            type: string
+        required:
+          - sessionId
+          - refreshToken
+responses:
+  '200':
+    description: Successfully refreshed session
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            accessToken:
+              type: string
+          required:
+            - accessToken
+  '400':
+    description: Bad request
+  '401':
+    description: Unauthorized - Invalid session or token

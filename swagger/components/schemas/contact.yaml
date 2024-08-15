@@ -41,7 +41,7 @@ properties:
   photo:
     description: "Link to the contact's photo"
     type: string
-    example: <https://res.cloudinary.com/uqwgdu/image/upload/image.png>
+    example: binary
   createdAt:
     description: 'Time when the contact was added'
     type: string
